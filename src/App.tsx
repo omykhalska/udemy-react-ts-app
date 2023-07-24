@@ -1,8 +1,14 @@
+import { LocalStorageSync } from 'components/LocalStorageSync';
+import { AnimatedBicycle } from 'components/AnimatedBicycle';
 import './App.css';
-import { StoringFunctions } from 'components/StoringFunctions';
 
 function App() {
-  return <StoringFunctions />;
+  return (
+    <>
+      <AnimatedBicycle />
+      <LocalStorageSync />
+    </>
+  );
 }
 
 export default App;
