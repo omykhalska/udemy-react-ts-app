@@ -1,5 +1,5 @@
 import { useEmojiPosition } from 'hooks/useEmojiPosition';
-import { CSSProperties, useMemo } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 const CONTAINER_STYLES: CSSProperties = {
   marginBottom: '32px',
@@ -31,14 +31,25 @@ function buildStyle(left: number, top: number): CSSProperties {
 }
 
 export function AnimatedBicycle(): JSX.Element {
-  const [left, top] = useEmojiPosition(MIN_STEP, MAX_STEP);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [containerHeight, setContainerHeight] = useState<number>(0);
 
-  const style = useMemo(() => buildStyle(left, top), [left, top]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const [left, top] = useEmojiPosition(MIN_STEP, MAX_STEP, containerWidth, containerHeight);
+
+  const style = buildStyle(left, top);
+  // const style = useMemo(() => buildStyle(left, top), [left, top]);  -> in such case a window resizing is not taken into account
+
+  useEffect(() => {
+    setContainerWidth(containerRef.current?.offsetWidth ?? 0);
+    setContainerHeight(containerRef.current?.offsetHeight ?? 0);
+  }, []);
 
   return (
     <>
       <p>Use ⬅️ ⬆️ ➡️ ⬇️ to move the bicycle.</p>
-      <div style={CONTAINER_STYLES}>
+      <div ref={containerRef} style={CONTAINER_STYLES}>
         <div style={style}>🚴‍♀️</div>
       </div>
     </>
