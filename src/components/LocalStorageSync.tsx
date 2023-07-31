@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { LogTagged } from 'utils/LogTagged';
 
 const STYLES = {
   container: {
@@ -42,6 +43,7 @@ export const LocalStorageSync = (): JSX.Element => {
   useEffect(
     function writeToLocalStorage() {
       if (value === null) return;
+
       try {
         const stringValue = String(value);
         localStorage.setItem(STORAGE_KEY, stringValue);
